@@ -1,10 +1,5 @@
 import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
 import java.awt.image.BufferedImage;
-import java.text.*;
-import java.util.*;
-import java.util.List; // resolves problem with java.awt.List and java.util.List
 
 /**
  * A class that represents a picture.  This class inherits from 
@@ -98,6 +93,61 @@ public class Picture extends SimplePicture
     }
   }
 
+  /**Method to keep only the blue values */
+  public void keepOnlyBlue(){
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels)
+    {
+      for (Pixel pixelObj : rowArray)
+      {
+        pixelObj.setGreen(0);
+        pixelObj.setRed(0);
+      }
+    }
+  }
+
+  /*Method to negate all the pixels in a picture */
+  public void negate(){
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels)
+    {
+      for (Pixel pixelObj : rowArray)
+      {
+        pixelObj.setGreen(255 - pixelObj.getGreen());
+        pixelObj.setRed(255 - pixelObj.getRed());
+        pixelObj.setBlue(255 - pixelObj.getBlue());
+      }
+    }
+  }
+
+  /*Method to greyscale the image */
+  public void greyscale(){
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels)
+    {
+      for (Pixel pixelObj : rowArray)
+      {
+        int average = (pixelObj.getGreen() + pixelObj.getBlue() + pixelObj.getRed())/3;
+        pixelObj.setGreen(average);
+        pixelObj.setRed(average);
+        pixelObj.setBlue(average);
+      }
+    }
+  }
+
+  /*Method to make the fish in the water.jpg more clear */
+  public void fixUnderWater(){
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels)
+    {
+      for (Pixel pixelObj : rowArray)
+      {
+        pixelObj.setGreen(pixelObj.getGreen() - 70);
+        pixelObj.setRed(pixelObj.getRed() - 90);
+        pixelObj.setBlue(pixelObj.getBlue() - 40);
+      }
+    }
+  }
   /** Method that mirrors the picture around a 
     * vertical mirror in the center of the picture
     * from left to right */
@@ -141,6 +191,31 @@ public class Picture extends SimplePicture
       }
     }
   }
+
+  /*Mirrors a picture around a mirror placed vertically from right to left */
+  public void mirrorVerticalRightToLeft()
+  {
+    Pixel[][] pixels = this.getPixels2D();
+    Pixel leftPixel = null;
+    Pixel rightPixel = null;
+    int width = pixels[0].length;
+    for (int row = 0; row < pixels.length; row++)
+    {
+      for (int col = 0; col < width/2; col++)
+      {
+        leftPixel = pixels[row][col];
+        rightPixel = pixels[row][width - 1 - col];
+        int blue = rightPixel.getBlue();
+        int green = rightPixel.getGreen();
+        int red = rightPixel.getRed();
+        rightPixel.setColor(leftPixel.getColor());
+        leftPixel.setBlue(blue);
+        leftPixel.setGreen(green);
+        leftPixel.setRed(red);
+      }
+    } 
+  }
+
 
   /** copy from the passed fromPic to the
     * specified startRow and startCol in the
