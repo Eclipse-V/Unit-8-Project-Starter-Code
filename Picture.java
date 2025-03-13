@@ -295,7 +295,18 @@ public class Picture extends SimplePicture
 
   /*Method to mirror a square part from bottom left to top right diagonally */
   public void mirrorDiagonal(){
-    
+    Pixel[][] pixels = this.getPixels2D();
+    Pixel botLeftPixel = null;
+    Pixel topRightPixel = null;
+    for (int row = 0; row < pixels.length; row++)
+    {
+      for (int col = row; col < pixels.length; col++)
+      {
+        topRightPixel = pixels[row][col];
+        botLeftPixel = pixels[col][row];
+        topRightPixel.setColor(botLeftPixel.getColor());
+      }
+    } 
   }
 
 
